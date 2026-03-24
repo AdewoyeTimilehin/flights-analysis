@@ -22,7 +22,11 @@ The `nycflights23` dataset contains five relational tables capturing commercial 
 
 # Section 1 — Easy
 
-1. List all unique carrier codes from the flights table.
+### These questions require single-table queries, basic aggregations, simple filters, and straightforward SELECT statements. Suitable for learners new to SQL or the nycflights23 dataset.
+
+| S/N  |   Questions  |
+|------|---------------|  
+|1.    |List all unique carrier codes from the flights table. |
 2. How many flights are recorded in the flights table?
 3. What are all the origin airports that appear in the flights table?
 4. Display the first 10 rows from the flights table.
