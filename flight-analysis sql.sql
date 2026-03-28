@@ -89,13 +89,8 @@ CREATE TABLE flights(
 	CONSTRAINT fk_airline
 	       FOREIGN KEY(carrier) REFERENCES airlines(carrier),
 	CONSTRAINT fk_dest
-	       FOREIGN KEY(dest) REFERENCES airports(faa),
-	CONSTRAINT fk_weather
-	       FOREIGN KEY(origin, year, month, day, hour, time_hour)
-		   REFERENCES weather(origin, year, month, day,hour, time_hour)
+	       FOREIGN KEY(dest) REFERENCES airports(faa)
 );
-
-ALTER TABLE flights DROP CONSTRAINT fk_weather;
 
 
 SELECT *
