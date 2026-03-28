@@ -1,6 +1,8 @@
+CREATE DATABASE flight_db;
+
 CREATE TABLE airlines(
           carrier CHAR(2) CONSTRAINT carrier_key PRIMARY KEY,
-		  name text 
+		  name TEXT 
 );
 
 SELECT *
@@ -24,7 +26,7 @@ FROM airports;
 
 CREATE TABLE planes(
           sn SMALLINT,
-	      tailnum TEXT,
+	      tailnum TEXT CONSTRAINT planes_key PRIMARY KEY,
 	      year INT,
 	      type VARCHAR(50),
 	      manufacturer VARCHAR(50),
@@ -45,18 +47,17 @@ CREATE TABLE weather(
 	      month SMALLINT,
 	      day INT,
 	      hour INT,
-	      temp REAL,
-	      dewp REAL,
-	      humid REAL,
+	      temp NUMERIC(5, 2),
+	      dewp NUMERIC(5, 2),
+	      humid NUMERIC(5, 2),
 	      wind_dir INT,
 	      wind_speed NUMERIC(10, 7),
 	      wind_gust NUMERIC(15, 12),
-	      precip REAL,
-	      pressure REAL,
-	      visib REAL,
+	      precip NUMERIC(10, 5),
+	      pressure NUMERIC(10, 5),
+	      visib NUMERIC(10, 5),
 	      time_hour TIMESTAMP,
-
-		  CONSTRAINT weather_key PRIMARY KEY(origin, year, month, day, hour),
+		  CONSTRAINT weather_key PRIMARY KEY(origin, year, month, day, hour, time_hour),
 		  FOREIGN KEY (origin) REFERENCES airports(faa)
 );
 
@@ -77,7 +78,7 @@ CREATE TABLE flights(
 	       carrier CHAR(2),
 	       flight INT,
 	       tailnum TEXT,
-	       origin CHAR(3),
+	       origin CHAR(3) REFERENCES airports(faa),
 	       dest CHAR(3),
 	       air_time INT,
 	       distance INT,
@@ -87,18 +88,15 @@ CREATE TABLE flights(
 
 	CONSTRAINT fk_airline
 	       FOREIGN KEY(carrier) REFERENCES airlines(carrier),
-	CONSTRAINT fk_origin
-	       FOREIGN KEY(origin) REFERENCES airports(faa),
 	CONSTRAINT fk_dest
 	       FOREIGN KEY(dest) REFERENCES airports(faa),
 	CONSTRAINT fk_weather
-	       FOREIGN KEY(origin, year, month, day, hour)
-		   REFERENCES weather(origin, year, month, day,hour)
+	       FOREIGN KEY(origin, year, month, day, hour, time_hour)
+		   REFERENCES weather(origin, year, month, day,hour, time_hour)
 );
 
-COPY flights
-FROM 'C:\Users\HomePC\Documents\SQL\flights-analysis\data\flights.csv'
-WITH (FORMAT CSV, HEADER, NULL 'NA');
+ALTER TABLE flights DROP CONSTRAINT fk_weather;
+
 
 SELECT *
 FROM flights;
