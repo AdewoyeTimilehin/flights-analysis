@@ -135,3 +135,101 @@ GROUP BY origin;
 SELECT *
 FROM flights
 WHERE dest = 'LAX';
+
+-- 26
+SELECT
+	fl.year,
+	fl.carrier,
+	al.name,
+	ROUND(AVG(fl.dep_delay), 2) AS average_dep_delay
+FROM flights AS fl JOIN airlines AS al
+ON fl.carrier = al.carrier
+GROUP BY fl.year, fl.carrier, al.name
+ORDER BY average_dep_delay DESC
+LIMIT 1;
+
+-- 27
+
+SELECT *
+FROM airports;
+
+SELECT
+	fl.origin,
+	ar.name AS destination,
+	COUNT (*) AS number_of_flights
+FROM flights AS fl JOIN airports AS ar
+ON fl.dest = ar.faa
+GROUP BY fl.origin, ar.name
+ORDER BY number_of_flights DESC
+LIMIT 10;
+
+-- 28
+-- For each month, calculate the average arrival delay across all flights.
+
+CREATE TABLE month_label (
+	month SMALLINT,
+	name TEXT
+);
+
+INSERT INTO month_label
+VALUES
+	(1, 'January'),
+	(2, 'February'),
+	(3, 'March'),
+	(4, 'April'),
+	(5, 'May'),
+	(6, 'June'),
+	(7, 'July'),
+	(8, 'August'),
+	(9, 'September'),
+	(10, 'October'),
+	(11, 'November'),
+	(12, 'December');
+
+SELECT
+	mn.name,
+	ROUND(AVG(arr_delay), 2) AS average_arrival_delay
+FROM flights AS fl JOIN month_label AS mn
+USING (month)
+GROUP BY mn.name, fl.month
+ORDER BY fl.month;
+
+-- 29
+
+SELECT *
+FROM flights
+WHERE dep_delay > arr_delay^2
+
+SELECT COUNT(*)
+FROM flights
+WHERE dep_delay > arr_delay^2
+
+-- 30
+-- Which destination airport received the most flights from EWR?
+
+SELECT
+	ar.name,
+	count(fl.dest) AS num_of_flights
+FROM flights AS fl JOIN airports AS ar
+ON fl.dest = ar.faa
+WHERE fl.origin = 'EWR'
+GROUP BY ar.name, fl.dest
+ORDER BY num_of_flights DESC
+LIMIT 1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
