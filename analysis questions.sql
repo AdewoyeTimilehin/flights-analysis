@@ -217,6 +217,130 @@ GROUP BY ar.name, fl.dest
 ORDER BY num_of_flights DESC
 LIMIT 1;
 
+SELECT *
+FROM flights;
+
+SELECT *
+FROM airlines;
+
+-- 31
+SELECT
+     name,
+     fl.carrier,
+	 COUNT(*) AS total_flight,
+	 ROUND(AVG(air_time), 2) AS avg_air_time
+FROM flights AS fl JOIN airlines AS al
+ON fl.carrier = al.carrier
+GROUP BY fl.carrier, name
+ORDER BY avg_air_time DESC;
+
+-- 32
+SELECT
+     tailnum,
+	 COUNT(*) AS total_flights
+FROM flights
+GROUP BY tailnum
+HAVING COUNT(*) > 200
+ORDER BY total_flights DESC;
+
+-- 33
+SELECT 
+     f.carrier, 
+	 a.name AS airline_name
+FROM flights AS f
+JOIN airlines AS a
+ON f.carrier = a.carrier;
+
+-- 34
+
+
+
+
+
+-- 35
+
+
+
+
+
+- 36
+SELECT p.manufacturer,
+       ROUND(AVG(f.arr_delay)::numeric, 2) AS avg_arrival_delay
+FROM flights AS f
+JOIN planes AS p
+ON f.tailnum = p.tailnum
+
+-- 37
+SELECT *
+FROM flights
+WHERE dep_time BETWEEN 600 AND 900;
+
+-- 38
+SELECT 
+    *
+FROM planes
+ORDER BY seats DESC
+LIMIT 5;
+
+-- 39 
+SELECT 
+    f.origin,
+    AVG(f.dep_delay) AS avg_dep_delay
+FROM flights AS f
+JOIN weather AS w
+    ON f.year = w.year
+    AND f.month = w.month
+    AND f.day = w.day
+    AND f.origin = w.origin
+WHERE w.precip > 0
+GROUP BY f.origin
+ORDER BY avg_dep_delay DESC;
+
+-- 40
+SELECT 
+    CAST(sched_dep_time / 100 AS INT) AS dep_hour,
+    COUNT(*) AS num_departures
+FROM flights
+GROUP BY dep_hour
+ORDER BY dep_hour;
+
+-- 41
+
+
+
+
+-- 42
+SELECT 
+    f.carrier,
+    a.name AS airline_name,
+    ROUND(AVG(f.distance), 2) AS avg_distance
+FROM flights AS f
+JOIN airlines AS a
+    ON f.carrier = a.carrier
+GROUP BY f.carrier, a.name
+ORDER BY avg_distance DESC
+LIMIT 1;
+
+-- 43
+SELECT 
+    f.carrier,
+    a.name AS airline_name,
+    COUNT(*) AS num_cancelled
+FROM flights AS f
+JOIN airlines AS a
+    ON f.carrier = a.carrier
+WHERE f.arr_time IS NULL 
+AND f.dep_time IS NOT NULL
+GROUP BY f.carrier, a.name
+ORDER BY num_cancelled DESC;
+
+-- 44
+
+
+
+
+
+-- 45
 
 
 
@@ -224,11 +348,40 @@ LIMIT 1;
 
 
 
+-- 46
 
 
 
 
 
+
+-- 47 
+SELECT 
+    CAST(sched_dep_time / 100 AS INT) AS dep_hour,
+    COUNT(*) AS num_departures
+FROM flights
+WHERE origin = 'JFK'
+GROUP BY dep_hour
+ORDER BY num_departures DESC
+LIMIT 10;
+
+-- 48
+
+
+
+
+
+-- 49
+
+
+
+
+
+
+-- 50
+SELECT *
+FROM flights
+WHERE arr_delay > dep_delay;
 
 
 
